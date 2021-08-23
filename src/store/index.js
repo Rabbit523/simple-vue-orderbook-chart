@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import registerWeb3 from './vuex-web3'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
+const vuexStore = new Vuex.Store({
+  state: { 
   },
   mutations: {
   },
@@ -13,3 +14,7 @@ export default new Vuex.Store({
   modules: {
   }
 })
+
+registerWeb3(vuexStore, 'w3')
+
+export default vuexStore;
