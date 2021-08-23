@@ -53,5 +53,10 @@ export default {
       if (this.$route.path !== path) this.$router.push(path);
     },
   },
+  methods: {
+    connect() {
+      this.$store.dispatch('initWeb3');
+    }
+  }
 };
 </script>

@@ -1,17 +1,24 @@
 <template>
   <v-container>
     <vue-metamask userMessage="msg" @onComplete="onComplete"> </vue-metamask>
+    <!-- <v-alert
+      dense
+      type="info"
+    >
+      I'm a dense alert with a <strong>type</strong> of info
+    </v-alert> -->
+    
     <v-container>
       <v-text-field
         v-model="address"
         label="Your Wallet Address"
         readonly
       ></v-text-field>
-      <v-text-field v-model="balance" label="Balance" readonly></v-text-field>
+      <v-text-field v-model="balance" label="Balance" readonly suffix="ETH"></v-text-field>
     </v-container>
     <v-container>
       <v-text-field v-model="receiver" label="To Address"></v-text-field>
-      <v-text-field v-model="amount" label="Amount"></v-text-field>
+      <v-text-field v-model="amount" label="Amount" suffix="ETH"></v-text-field>
       <v-btn
         color="primary"
         elevation="3"
@@ -19,16 +26,14 @@
         rounded
         text
         v-on:click="signData()"
-        >Sign Data</v-btn
-      >
+        >Sign Data</v-btn>
     </v-container>
   </v-container>
 </template>
 
 <script>
 import VueMetamask from "vue-metamask";
-// import { ethers } from 'ethers'
-// import Web3 from "web3";
+import { mapState } from "vuex"
 export default {
   name: "Metamask",
   components: {
@@ -37,23 +42,32 @@ export default {
   data() {
     return {
       msg: "This is demo net work",
-      address: "",
-      web3: null,
-      balance: 0,
       BalanceInterval: null,
       amount: 0.1,
       receiver: "0x63D8fdD998834accC847b55705135d3EE1B7bc90",
     };
   },
+  computed: {
+    size () {
+      return Math.min(parseInt(this.width * 0.30), 500)
+    },
+    ...mapState({
+      address: state => state.w3.coinbase,
+      balance: state => state.w3.balance,
+      network: state => state.w3.network,
+      web3: state=> state.w3.instance
+    })
+  },
   methods: {
     onComplete(data) {
       if (data.type == "MAINNET") {
-        alert("Network should be testnet");
+        // alert("Network should be testnet");
+        this.$vToastify.info("This should be testnet");
       } else {
-        alert("This is testnet");
+        this.$vToastify.success("This is testnet");
+        // alert("This is testnet");
       }
       this.address = data.metaMaskAddress;
-      this.web3TimerCheck(data.web3);
     },
     callback(err, balance) {
       this.balance = balance;
@@ -79,7 +93,8 @@ export default {
           from: this.address,
         })
         .then((raw) => {
-          alert(raw);
+          // alert(raw);
+          this.$vToastify.info(raw);
         });
     },
     getAccountsUsingWeb3() {
