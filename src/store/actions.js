@@ -20,24 +20,6 @@ export default {
                 .catch(error => reject(error))
         }
     }),
-  // disconnectFromWeb3: ({ commit }) =>
-  //   new Promise((resolve, reject) => {
-
-  //       if(window.ethereum){
-  //           window.ethereum.disable()
-  //               .then(async () => {
-  //                   window.web3 = window.ethereum
-  //                   const w3 = new Web3(window.web3)
-
-  //                   const isInject = await w3.eth.net.isListening()
-  //                   commit('setInjected', isInject)
-  //                   commit('setInstance', () => w3)
-  //                   commit('setLocal', false)
-  //                   resolve(w3)
-  //               })
-  //               .catch(error => reject(error))
-  //       }
-  //   }),
 
   getBlockchainNetwork: ({ commit, state }) =>
     new Promise((resolve, reject) => {

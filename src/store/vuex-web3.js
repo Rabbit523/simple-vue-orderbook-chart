@@ -13,5 +13,6 @@ export default (store, moduleName = 'w3') => {
     actions,
   })
   
+  store.dispatch('initWeb3')
   
 }
